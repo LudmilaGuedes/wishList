@@ -1,0 +1,358 @@
+<title>Lista de Compras EUA · Canadá</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: sticky header with category tabs, then a responsive grid of product cards, each comparing US and Canada store prices side by side. */
+:root {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --surface-2: #eaeef4;
+  --ink: #16202e;
+  --muted: #5b6878;
+  --line: #d6dde7;
+  --accent: #1f5eff;
+  --accent-ink: #ffffff;
+  --tag: #ffd84d;
+  --tag-ink: #2a2200;
+  --good: #0f8a4f;
+  --good-bg: #e2f5ea;
+  --warn: #9a6200;
+  --warn-bg: #fff1d1;
+  --danger: #c22f2f;
+  --us: #2753c9;
+  --ca: #c8322f;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141c; --surface: #171e29; --surface-2: #202937; --ink: #e9eef5; --muted: #98a5b6; --line: #2c3747;
+    --accent: #6f98ff; --accent-ink: #0b1220; --tag: #ffd84d; --tag-ink: #2a2200;
+    --good: #4fd18f; --good-bg: #123325; --warn: #ffc457; --warn-bg: #3a2c0e; --danger: #ff7a7a;
+    --us: #8eaaff; --ca: #ff8b86; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141c; --surface: #171e29; --surface-2: #202937; --ink: #e9eef5; --muted: #98a5b6; --line: #2c3747;
+  --accent: #6f98ff; --accent-ink: #0b1220; --tag: #ffd84d; --tag-ink: #2a2200;
+  --good: #4fd18f; --good-bg: #123325; --warn: #ffc457; --warn-bg: #3a2c0e; --danger: #ff7a7a;
+  --us: #8eaaff; --ca: #ff8b86; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.top-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 18px 12px; }
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand-tag { flex: none; width: 40px; height: 40px; border-radius: 10px 4px 4px 10px; background: var(--tag); color: var(--tag-ink); display: grid; place-items: center; font-family: var(--font-mono); font-weight: 700; font-size: 18px; position: relative; }
+.brand-tag::after { content: ""; position: absolute; left: 6px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--surface); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.35rem, 3vw, 1.75rem); letter-spacing: -0.02em; margin: 0; line-height: 1.1; text-wrap: balance; }
+.sub { color: var(--muted); font-size: 0.85rem; margin: 2px 0 0; }
+.actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.search { position: relative; }
+.search input { width: 220px; max-width: 100%; }
+input, select, textarea { font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid transparent; padding: 9px 14px; font-weight: 600; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-ghost { background: transparent; color: var(--muted); border-color: var(--line); }
+.btn-ghost:hover { color: var(--ink); }
+.btn-danger { background: var(--danger); color: #fff; }
+
+.tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: none; background: var(--surface-2); color: var(--muted); border: 1px solid transparent; border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: 0.9rem; display: inline-flex; gap: 8px; align-items: center; }
+.tab .n { font-family: var(--font-mono); font-size: 0.75rem; opacity: 0.8; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+
+main { padding-block: 22px 60px; display: grid; gap: 20px; }
+
+.summary { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: baseline; color: var(--muted); font-size: 0.88rem; }
+.summary strong { color: var(--ink); font-family: var(--font-mono); font-weight: 700; }
+
+.add-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.add-panel h2 { font-family: var(--font-display); font-size: 1.1rem; margin: 0 0 4px; }
+.add-panel p.hint { margin: 0 0 14px; color: var(--muted); font-size: 0.88rem; max-width: 65ch; }
+.form-grid { display: grid; grid-template-columns: 2fr 1.4fr 1fr; gap: 12px; }
+.form-grid .full { grid-column: 1 / -1; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.field input, .field select, .field textarea { width: 100%; }
+.form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
+.form-msg { margin-right: auto; color: var(--danger); font-size: 0.88rem; align-self: center; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; align-items: start; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); display: grid; min-width: 0; overflow: hidden; }
+.card-head { padding: 16px 16px 12px; display: grid; gap: 6px; }
+.meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.chip { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; background: var(--surface-2); color: var(--muted); }
+.chip.pending { background: var(--warn-bg); color: var(--warn); }
+.chip.example { background: transparent; border: 1px dashed var(--line); }
+.card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; line-height: 1.2; margin: 0; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: anywhere; }
+.model { color: var(--muted); font-size: 0.85rem; margin: 0; overflow-wrap: anywhere; }
+
+.best { margin: 0 16px; padding: 10px 12px; border-radius: 10px; background: var(--good-bg); color: var(--good); display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; font-size: 0.85rem; font-weight: 600; }
+.best .price { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; }
+
+.markets { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 12px; border-top: 1px solid var(--line); }
+.market { padding: 12px 16px 14px; min-width: 0; }
+.market + .market { border-left: 1px solid var(--line); }
+.market-title { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.market-title .dot { width: 8px; height: 8px; border-radius: 50%; }
+.us .dot { background: var(--us); } .us .market-title { color: var(--us); }
+.ca .dot { background: var(--ca); } .ca .market-title { color: var(--ca); }
+.rows { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+.row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; font-size: 0.88rem; }
+.row a, .row span.store { color: var(--ink); text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.row a:hover { text-decoration: underline; color: var(--accent); }
+.row .p { font-family: var(--font-mono); font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row.low .p { color: var(--good); font-weight: 700; }
+.row.low .p::before { content: "▼ "; font-size: 0.7em; }
+.row.na .p { color: var(--muted); font-weight: 400; font-family: var(--font-body); font-size: 0.8rem; }
+.none { color: var(--muted); font-size: 0.85rem; margin: 0; }
+
+.card-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 16px; background: var(--surface-2); color: var(--muted); font-size: 0.78rem; flex-wrap: wrap; }
+.card-foot button { padding: 4px 10px; font-size: 0.78rem; }
+.note { padding: 0 16px 12px; margin: 0; color: var(--muted); font-size: 0.82rem; }
+
+.empty { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius); padding: 36px 20px; text-align: center; color: var(--muted); }
+.empty h2 { font-family: var(--font-display); color: var(--ink); margin: 0 0 6px; font-size: 1.2rem; }
+.empty p { margin: 0 auto; max-width: 52ch; }
+
+.how { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; max-width: 75ch; }
+.how strong { color: var(--ink); }
+
+@media (max-width: 720px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
+  .search input { width: 100%; }
+  .search { flex: 1 1 100%; }
+}
+@media (max-width: 420px) {
+  .markets { grid-template-columns: 1fr; }
+  .market + .market { border-left: 0; border-top: 1px solid var(--line); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card { transition: border-color .15s; }
+  .card:hover { border-color: var(--muted); }
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <div class="brand">
+        <div class="brand-tag" aria-hidden="true">$</div>
+        <div>
+          <h1>Lista de Compras EUA · Canadá</h1>
+          <p class="sub" id="fxline">Preços em lojas oficiais, Amazon, Walmart, Target e Best Buy</p>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="search"><input id="q" type="search" placeholder="Buscar na lista…" aria-label="Buscar na lista"></div>
+        <button class="btn-primary" id="addToggle" type="button">+ Adicionar item</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Categorias"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="add-panel" id="addPanel" hidden>
+    <h2>Novo item</h2>
+    <p class="hint">Escreva o nome com marca e modelo (ex.: "Sony WH-1000XM5"). O item entra como <b>aguardando pesquisa</b>; depois é só pedir ao Claude "atualiza os preços" que ele pesquisa nas lojas dos EUA e do Canadá.</p>
+    <form id="addForm" autocomplete="off">
+      <div class="form-grid">
+        <div class="field"><label for="f-name">Produto</label><input id="f-name" required maxlength="120" placeholder="Ex.: CeraVe Moisturizing Cream"></div>
+        <div class="field"><label for="f-model">Modelo / tamanho / cor</label><input id="f-model" maxlength="120" placeholder="Ex.: pote 16 oz (453 g)"></div>
+        <div class="field"><label for="f-cat">Categoria</label><select id="f-cat"></select></div>
+        <div class="field full"><label for="f-note">Observação (opcional)</label><input id="f-note" maxlength="200" placeholder="Ex.: tamanho M, cor preta"></div>
+      </div>
+      <div class="form-actions">
+        <span class="form-msg" id="formMsg" role="status"></span>
+        <button type="button" class="btn-ghost" id="addCancel">Cancelar</button>
+        <button type="submit" class="btn-primary" id="addSave">Salvar item</button>
+      </div>
+    </form>
+  </section>
+
+  <div class="summary" id="summary"></div>
+  <div id="list"><div class="empty"><h2>Carregando sua lista…</h2><p>Os itens e preços salvos aparecem aqui em instantes.</p></div></div>
+
+  <p class="how"><strong>Como funciona:</strong> os preços são pesquisados pelo Claude e mostrados sem imposto (nos EUA o imposto varia por estado; no Canadá, GST/HST é somado no caixa). O preço de Walmart e Target pode mudar conforme o CEP. A Target não tem lojas no Canadá. Para atualizar, peça ao Claude: <em>"atualiza os preços da minha lista"</em>.</p>
+</main>
+
+<script>
+(function () {
+  const CATS = [
+    { id: "roupas", label: "Roupas" },
+    { id: "beleza", label: "Beleza" },
+    { id: "eletronicos", label: "Eletrônicos" },
+    { id: "casa", label: "Casa" },
+    { id: "outros", label: "Outros" }
+  ];
+  const catLabel = id => (CATS.find(c => c.id === id) || CATS[CATS.length - 1]).label;
+  let items = [], fx = null, cat = "todas", q = "", loaded = false, canWrite = true, db = null;
+  const $ = id => document.getElementById(id);
+
+  try { const saved = localStorage.getItem("lc-cat"); if (saved) cat = saved; } catch (e) {}
+
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const safeUrl = u => (typeof u === "string" && /^https?:\/\//i.test(u)) ? u : "";
+  const money = (n, cur) => (typeof n === "number" && isFinite(n))
+    ? (cur === "CAD" ? "C$ " : "US$ ") + n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    : "";
+  const fmtDate = iso => { try { return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" }); } catch (e) { return ""; } };
+  const priced = arr => (Array.isArray(arr) ? arr : []).filter(r => typeof r.price === "number" && isFinite(r.price));
+
+  $("f-cat").innerHTML = CATS.map(c => `<option value="${c.id}">${c.label}</option>`).join("");
+
+  function renderTabs() {
+    const counts = { todas: items.length };
+    items.forEach(i => { const k = CATS.some(c => c.id === i.category) ? i.category : "outros"; counts[k] = (counts[k] || 0) + 1; });
+    const all = [{ id: "todas", label: "Todas" }, ...CATS];
+    $("tabs").innerHTML = all.map(c =>
+      `<button type="button" class="tab" role="tab" data-cat="${c.id}" aria-selected="${cat === c.id}">${c.label}<span class="n">${counts[c.id] || 0}</span></button>`
+    ).join("");
+  }
+
+  function marketHtml(rows, cur, cls, title, lowPrice) {
+    const list = Array.isArray(rows) ? rows : [];
+    const body = list.length ? `<ul class="rows">${list.map(r => {
+      const has = typeof r.price === "number" && isFinite(r.price);
+      const url = safeUrl(r.url);
+      const name = url ? `<a href="${esc(url)}" target="_blank" rel="noopener" title="${esc(r.store)}">${esc(r.store)}</a>` : `<span class="store">${esc(r.store)}</span>`;
+      const p = has ? money(r.price, cur) : esc(r.status || "indisponível");
+      const low = has && lowPrice != null && r.price === lowPrice ? " low" : "";
+      return `<li class="row${has ? "" : " na"}${low}">${name}<span class="p">${p}</span></li>`;
+    }).join("")}</ul>` : `<p class="none">Sem preços ainda</p>`;
+    return `<div class="market ${cls}"><div class="market-title"><span class="dot"></span>${title}</div>${body}</div>`;
+  }
+
+  function card(it) {
+    const us = priced(it.prices && it.prices.us), ca = priced(it.prices && it.prices.ca);
+    const lowUS = us.length ? Math.min(...us.map(r => r.price)) : null;
+    const lowCA = ca.length ? Math.min(...ca.map(r => r.price)) : null;
+    const pending = it.status === "pending" || (!us.length && !ca.length);
+    let best = "";
+    if (fx && fx.usdToCad && (lowUS != null || lowCA != null)) {
+      const usInUsd = lowUS, caInUsd = lowCA != null ? lowCA / fx.usdToCad : null;
+      let where, val, alt;
+      if (caInUsd == null || (usInUsd != null && usInUsd <= caInUsd)) {
+        const r = us.find(x => x.price === lowUS);
+        where = `EUA · ${esc(r.store)}`; val = money(lowUS, "USD"); alt = money(lowUS * fx.usdToCad, "CAD");
+      } else {
+        const r = ca.find(x => x.price === lowCA);
+        where = `Canadá · ${esc(r.store)}`; val = money(lowCA, "CAD"); alt = money(caInUsd, "USD");
+      }
+      best = `<div class="best"><span>Mais barato: ${where}</span><span><span class="price">${val}</span> <span style="opacity:.75;font-weight:500">≈ ${alt}</span></span></div>`;
+    }
+    const chips = [`<span class="chip">${esc(catLabel(it.category))}</span>`];
+    if (pending) chips.push(`<span class="chip pending">Aguardando pesquisa</span>`);
+    if (it.example) chips.push(`<span class="chip example">Exemplo</span>`);
+    const updated = it.updatedAt ? `Preços de ${fmtDate(it.updatedAt)}` : `Adicionado em ${fmtDate(it.addedAt)}`;
+    const del = canWrite ? `<button type="button" class="btn-ghost" data-del="${esc(it.id)}">Remover</button>` : "";
+    return `<article class="card">
+      <div class="card-head"><div class="meta">${chips.join("")}</div><h3>${esc(it.name)}</h3>${it.model ? `<p class="model">${esc(it.model)}</p>` : ""}</div>
+      ${it.note ? `<p class="note">${esc(it.note)}</p>` : ""}
+      ${best}
+      <div class="markets">${marketHtml(it.prices && it.prices.us, "USD", "us", "Estados Unidos · USD", lowUS)}${marketHtml(it.prices && it.prices.ca, "CAD", "ca", "Canadá · CAD", lowCA)}</div>
+      <div class="card-foot"><span>${updated}</span>${del}</div>
+    </article>`;
+  }
+
+  function render() {
+    renderTabs();
+    if (fx && fx.usdToCad) $("fxline").textContent = `Câmbio usado: US$ 1 = C$ ${fx.usdToCad.toFixed(4).replace(".", ",")}${fx.updatedAt ? " · " + fmtDate(fx.updatedAt) : ""}`;
+    if (!loaded) return;
+    const term = q.trim().toLowerCase();
+    const shown = items
+      .filter(i => cat === "todas" || i.category === cat || (cat === "outros" && !CATS.some(c => c.id === i.category)))
+      .filter(i => !term || (i.name + " " + (i.model || "") + " " + (i.note || "")).toLowerCase().includes(term))
+      .sort((a, b) => String(b.addedAt || "").localeCompare(String(a.addedAt || "")));
+    const pend = items.filter(i => i.status === "pending").length;
+    $("summary").innerHTML = items.length
+      ? `<span><strong>${items.length}</strong> ${items.length === 1 ? "item" : "itens"} na lista</span><span><strong>${pend}</strong> aguardando pesquisa</span>`
+      : "";
+    if (!items.length) {
+      $("list").innerHTML = `<div class="empty"><h2>Sua lista está vazia</h2><p>Toque em <b>+ Adicionar item</b>, escreva o produto com marca e modelo e escolha a categoria. Depois peça ao Claude para pesquisar os preços.</p></div>`;
+    } else if (!shown.length) {
+      $("list").innerHTML = `<div class="empty"><h2>Nada por aqui</h2><p>Nenhum item ${term ? "corresponde à busca" : "nesta categoria"}.</p></div>`;
+    } else {
+      $("list").innerHTML = `<div class="grid">${shown.map(card).join("")}</div>`;
+    }
+  }
+
+  $("tabs").addEventListener("click", e => {
+    const b = e.target.closest("[data-cat]"); if (!b) return;
+    cat = b.dataset.cat; try { localStorage.setItem("lc-cat", cat); } catch (err) {}
+    render();
+  });
+  $("q").addEventListener("input", e => { q = e.target.value; render(); });
+
+  const panel = $("addPanel");
+  $("addToggle").addEventListener("click", () => {
+    panel.hidden = !panel.hidden;
+    if (!panel.hidden) { if (cat !== "todas") $("f-cat").value = cat; $("f-name").focus(); }
+  });
+  $("addCancel").addEventListener("click", () => { panel.hidden = true; $("formMsg").textContent = ""; });
+
+  $("addForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = $("f-name").value.trim();
+    if (!name) { $("formMsg").textContent = "Escreva o nome do produto."; return; }
+    if (!db) { $("formMsg").textContent = "Não foi possível salvar agora: a lista não está conectada. Recarregue a página."; return; }
+    $("addSave").disabled = true; $("formMsg").textContent = "";
+    try {
+      await db.collection("items").add({
+        name, model: $("f-model").value.trim(), category: $("f-cat").value, note: $("f-note").value.trim(),
+        status: "pending", addedAt: new Date().toISOString(), prices: { us: [], ca: [] }
+      });
+      $("addForm").reset(); panel.hidden = true;
+    } catch (err) {
+      $("formMsg").textContent = err && err.code === "invalid_argument" ? "Você não tem permissão para editar esta lista." : "Não foi possível salvar. Tente de novo.";
+    } finally { $("addSave").disabled = false; }
+  });
+
+  $("list").addEventListener("click", async e => {
+    const b = e.target.closest("[data-del]"); if (!b || !db) return;
+    if (!b.classList.contains("btn-danger")) {
+      b.classList.remove("btn-ghost"); b.classList.add("btn-danger"); b.textContent = "Confirmar remoção";
+      setTimeout(() => { if (b.isConnected) { b.classList.add("btn-ghost"); b.classList.remove("btn-danger"); b.textContent = "Remover"; } }, 4000);
+      return;
+    }
+    b.disabled = true;
+    try { await db.collection("items").doc(b.dataset.del).delete(); } catch (err) { b.disabled = false; b.textContent = "Erro, tente de novo"; }
+  });
+
+  render();
+
+  (async () => {
+    if (!window.claude || !window.claude.use) { loaded = true; render(); return; }
+    db = await window.claude.use("db");
+    const user = await window.claude.use("user");
+    if (user && user.can) { try { const c = await user.can("data.write"); if (c === false) { canWrite = false; $("addToggle").hidden = true; } } catch (e) {} }
+    if (!db) {
+      loaded = true; items = []; render();
+      $("list").innerHTML = `<div class="empty"><h2>Lista indisponível</h2><p>Entre na sua conta do Claude para ver e editar a lista.</p></div>`;
+      return;
+    }
+    const timer = setTimeout(() => {
+      if (!loaded) $("list").innerHTML = `<div class="empty"><h2>A lista está demorando para carregar</h2><p>Verifique sua conexão. Os itens aparecem assim que a lista responder.</p></div>`;
+    }, 10000);
+    db.collection("items").onSnapshot(snap => {
+      items = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+      if (!snap.metadata.fromCache) clearTimeout(timer);
+      loaded = true; render();
+    }, () => { clearTimeout(timer); loaded = true; render(); });
+    db.doc("settings/fx").onSnapshot(s => { fx = s.exists ? s.data() : null; render(); }, () => {});
+  })();
+})();
+</script>

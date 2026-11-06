@@ -1,0 +1,40 @@
+# Blueprint do Render: cria o site, o banco Postgres e uma tarefa diária que atualiza os preços.
+# No painel do Render: New > Blueprint > escolha este repositório.
+services:
+  - type: web
+    name: lista-de-compras
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lista-de-compras-db
+          property: connectionString
+      - key: SERPAPI_KEY
+        sync: false
+      - key: APP_PASSWORD
+        sync: false
+
+  # Atualiza todos os preços uma vez por dia (09:00 UTC = 06:00 em Brasília).
+  # Cron Jobs no Render são pagos; se não quiser, apague este bloco e use o botão "Atualizar todos os preços".
+  - type: cron
+    name: lista-de-compras-precos
+    runtime: node
+    plan: starter
+    schedule: "0 9 * * *"
+    buildCommand: npm install
+    startCommand: npm run update-prices
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lista-de-compras-db
+          property: connectionString
+      - key: SERPAPI_KEY
+        sync: false
+
+databases:
+  - name: lista-de-compras-db
+    plan: free

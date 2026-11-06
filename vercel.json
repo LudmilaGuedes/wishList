@@ -1,0 +1,17 @@
+{
+  "services": {
+    "lista-de-compras": {
+      "root": ".",
+      "buildCommand": "npm install"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "type": "service",
+        "service": "lista-de-compras"
+      }
+    }
+  ]
+}

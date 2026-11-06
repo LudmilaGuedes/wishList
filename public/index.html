@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wishlist</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23f6dfe6'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='%23c25e7f'%3E%E2%99%A1%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,0..100;1,9..144,300..600,0..100&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <div class="brand">
+        <svg class="bow" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 22c-4-6-12-10-16-7s-1 11 4 12c4 1 9-2 12-5z"/>
+          <path d="M24 22c4-6 12-10 16-7s1 11-4 12c-4 1-9-2-12-5z"/>
+          <path d="M22 25l-5 14 4-2 2 4 1-15"/>
+          <path d="M26 25l5 14-4-2-2 4-1-15"/>
+          <ellipse cx="24" cy="23.5" rx="2.6" ry="3" fill="currentColor"/>
+        </svg>
+        <div>
+          <p class="eyebrow">EUA &amp; Canadá</p>
+          <h1><b>Wishlist</b></h1>
+          <p class="sub" id="fxline">Preços em lojas oficiais, Amazon, Walmart, Target e Best Buy</p>
+          <p class="sub" id="autoline"></p>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="search"><input id="q" type="search" placeholder="Buscar na lista…" aria-label="Buscar na lista"></div>
+        <button class="btn-ghost" id="refreshAll" type="button" hidden>Atualizar todos os preços</button>
+        <button class="btn-primary" id="addToggle" type="button">+ Adicionar item</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Categorias"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <section class="add-panel" id="addPanel" hidden>
+    <h2>Novo item</h2>
+    <p class="hint">Escreva o nome com marca e modelo (ex.: "Sony WH-1000XM5"). Quanto mais exato, melhor a busca encontra o produto certo em cada loja.</p>
+    <form id="addForm" autocomplete="off">
+      <div class="form-grid">
+        <div class="field"><label for="f-name">Produto</label><input id="f-name" required maxlength="120" placeholder="Ex.: CeraVe Moisturizing Cream"></div>
+        <div class="field"><label for="f-model">Modelo / tamanho / cor</label><input id="f-model" maxlength="120" placeholder="Ex.: 16 oz"></div>
+        <div class="field"><label for="f-cat">Categoria</label><select id="f-cat"></select></div>
+        <div class="field"><label for="f-variant">Cor / tamanho</label><input id="f-variant" maxlength="80" placeholder="Ex.: Burgundy, M, 256 GB"></div>
+        <div class="field"><label for="f-official">Loja oficial (marca)</label><input id="f-official" maxlength="60" placeholder="Ex.: Sony, Nike, Sephora"></div>
+        <div class="field span2"><label for="f-note">Observação (opcional)</label><input id="f-note" maxlength="200" placeholder="Ex.: tamanho M, cor preta"></div>
+        <div class="field full"><label for="f-image">Link da foto (opcional)</label><input id="f-image" type="url" maxlength="1000" placeholder="Clique com o botão direito na foto do produto › Copiar endereço da imagem"></div>
+      </div>
+      <div class="form-actions">
+        <span class="form-msg" id="formMsg" role="status"></span>
+        <button type="button" class="btn-ghost" id="addCancel">Cancelar</button>
+        <button type="submit" class="btn-primary" id="addSave">Salvar item</button>
+      </div>
+    </form>
+  </section>
+
+  <div class="summary" id="summary"></div>
+  <div id="list"><div class="empty"><h2>Carregando sua lista…</h2></div></div>
+
+  <p class="how"><strong>Como funciona:</strong> os preços aparecem sem imposto (nos EUA o imposto varia por estado; no Canadá, GST/HST é somado no caixa). Os preços dos EUA são buscados como se você estivesse em Houston, Texas (Walmart e Target mudam o preço conforme a cidade). A Target não tem lojas no Canadá. A seta ↑↓ mostra quanto o preço mudou desde a última atualização. O valor em reais é aproximado, calculado com <span id="brlRates"></span>.</p>
+</main>
+
+<dialog id="editor" aria-labelledby="editorTitle">
+  <form id="editorForm" method="dialog">
+    <h2 id="editorTitle">Editar preços</h2>
+    <p class="hint" id="editorName"></p>
+    <div class="editor-grid">
+      <section>
+        <h3 class="us-title">Estados Unidos · USD</h3>
+        <div class="price-rows" id="rows-us"></div>
+        <button type="button" class="btn-ghost small" data-addrow="us">+ Loja</button>
+      </section>
+      <section>
+        <h3 class="ca-title">Canadá · CAD</h3>
+        <div class="price-rows" id="rows-ca"></div>
+        <button type="button" class="btn-ghost small" data-addrow="ca">+ Loja</button>
+      </section>
+    </div>
+    <div class="form-actions">
+      <span class="form-msg" id="editorMsg" role="status"></span>
+      <button type="button" class="btn-ghost" id="editorCancel">Cancelar</button>
+      <button type="submit" class="btn-primary" id="editorSave">Salvar preços</button>
+    </div>
+  </form>
+</dialog>
+
+<datalist id="stores-us"><option value="Amazon"><option value="Walmart"><option value="Target"><option value="Best Buy"></datalist>
+<datalist id="stores-ca"><option value="Amazon.ca"><option value="Walmart.ca"><option value="Best Buy CA"></datalist>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "lista-de-compras",
+  "version": "1.0.0",
+  "description": "Lista de compras com comparação de preços nos EUA e no Canadá",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "update-prices": "node scripts/update-prices.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}

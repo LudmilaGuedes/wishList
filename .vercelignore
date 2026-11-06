@@ -1,0 +1,9 @@
+node_modules
+.env
+data
+lista-de-compras.html
+render.yaml
+CLAUDE.md
+.env.local
+.vercel
+.app-key.local
