@@ -137,3 +137,5 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
   Foto: CDN Shopify da loja Toby's (adidas bloqueia leitura automática, 403). EUA: ALS US$ 119,95 (de 150, conferido),
   Road Runner Sports US$ 149,95 (busca web). CA: Sport Chek C$ 169,99 (busca web; lá se chama "Dropset Pro"). adidas US/CA sem preço lido.
   Obs.: chamada direta à API da adidas foi bloqueada pela permissão automática (anti-bot) — não insistir.
+- Adicionado item 17: Women's PUMA x HYROX Deviate NITRO 4 (312905-01, Pure Pink/PUMA White), roupas, "Tamanho 7", foto CDN PUMA (conferida), 0 SerpApi.
+  EUA: PUMA oficial US$ 180 (conferido). CA: PUMA oficial C$ 230 (conferido). Outra cor (Intense Mint/Light Lavender, 314154) só na PUMA EUA.
