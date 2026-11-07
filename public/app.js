@@ -61,6 +61,7 @@
     const ids = autoInfo.due.slice();
     let credits = 0, done = 0;
     for (const id of ids) {
+      $("autoline").hidden = false;
       $("autoline").textContent = `Atualizando preços de hoje… ${done + 1} de ${ids.length}`;
       try { const r = await api("POST", `/api/items/${id}/auto-refresh`); credits += r.credits || 0; } catch (e) {}
       done++;
@@ -68,14 +69,6 @@
     autoRunning = false;
     await load();
     toast(`Preços de hoje atualizados (${ids.length} ${ids.length === 1 ? "item" : "itens"}) · ${creditsText(credits)}.`);
-  }
-
-  function autoText() {
-    const left = serpLeft == null ? "" : ` · SerpApi: ${serpLeft} consultas restantes`;
-    if (!autoInfo) return left.slice(3);
-    const [y, m, d] = autoInfo.from.split("-");
-    if (!autoInfo.active) return `Atualização automática a partir de ${d}/${m}/${y} (até lá, só pelos botões)${left}`;
-    return `Preços atualizados automaticamente 1 vez por dia${left}`;
   }
 
   /* -------- render -------- */
@@ -149,7 +142,7 @@
   function render() {
     renderTabs();
     $("refreshAll").hidden = !items.length;
-    if (!autoRunning) $("autoline").textContent = autoText();
+    if (!autoRunning) $("autoline").hidden = true; // só aparece enquanto atualiza os preços do dia
     if (!loaded) return;
     const term = q.trim().toLowerCase();
     const shown = items
