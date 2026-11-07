@@ -12,14 +12,17 @@ Site para montar uma lista de compras por categoria e comparar preços nos EUA e
 - Teste rápido: `curl localhost:3000/healthz` deve responder `ok`; `curl localhost:3000/api/items` lista os itens.
 - Não há testes automatizados. Código no GitHub: https://github.com/LudmilaGuedes/wishList (público, branch main).
 - Commits **sem** linha Co-Authored-By do Claude (pedido da usuária).
+- **Publicação automática:** hook Stop (`.claude/settings.local.json`) roda `scripts/publicar.sh` ao fim de cada resposta:
+  commit + push se houver mudança → Vercel atualiza o site sozinha.
 - Nunca mostrar o conteúdo do `.env` (tem a `SERPAPI_KEY`).
 
 ## Ao adicionar um produto (pedido da usuária)
 
 Sempre cadastrar com **foto e preços dos EUA e do Canadá**, do jeito grátis:
 achar páginas oficiais/lojas físicas pela web → conferir preço com `checkDirect` (`src/direct.js`) →
-foto pelo CDN da marca (conferir a cor) → gravar via `PUT /api/items/:id` e `PUT /api/items/:id/prices/:country`
-(com Node `fetch`). Só usar SerpApi se não achar de graça. The North Face CA bloqueia leitura automática (403);
+foto pelo CDN da marca (conferir a cor) → gravar via `POST /api/items`, `PUT /api/items/:id` e `PUT /api/items/:id/prices/:country`
+(com Node `fetch`) **no site online** https://lista-de-compras-blond.vercel.app, com header `x-app-key` = conteúdo de `.app-key.local`
+(dados ficam no Neon e aparecem em todo aparelho). Não gravar no servidor local (`data/db.json` é cópia antiga). Só usar SerpApi se não achar de graça. The North Face CA bloqueia leitura automática (403);
 a TNF EUA às vezes também.
 
 ## Estrutura
@@ -112,3 +115,4 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
   e por engano isso sobrescreveu `.app-key.local`. Trocar APP_KEY na Vercel foi bloqueado pela permissão automática.
   Resolvido: usuária definiu nova APP_KEY no painel (salva em .app-key.local). Testado: 9 itens no ar, SerpApi ok (saldo 218).
   Dica: nunca usar `vercel env pull` para ler APP_KEY/SERPAPI_KEY; nunca escrever a chave no CLAUDE.md (repo público).
+- Criada publicação automática (hook Stop + scripts/publicar.sh). Produtos novos passam a ser gravados direto no site online.

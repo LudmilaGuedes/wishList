@@ -4,3 +4,4 @@ data/
 .env*
 !.env.example
 .app-key.local
+.claude/settings.local.json
