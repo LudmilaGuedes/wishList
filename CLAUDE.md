@@ -118,3 +118,5 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
 - Criada publicação automática (hook Stop + scripts/publicar.sh). Produtos novos passam a ser gravados direto no site online.
 - Visual: topo compacto no celular (some ao rolar), sem contadores, sem "Como funciona". Card de câmbio no fim (real, 1x/dia, open.er-api).
   Dólar exibido SEM imposto (igual à loja); valor em R$ COM imposto (TAX em public/app.js: EUA 8,25% Houston TX; CA 13% HST Toronto).
+- Botão "comprado" (check no canto do card): grava `bought_at` no banco (PUT /api/items/:id/bought), vale em todo aparelho;
+  card comprado vai para o final, apagado, foto cinza, nome riscado. Botões do rodapé do card foram removidos (editar/remover = pedir ao Claude).
