@@ -130,3 +130,6 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
 ### 2026-11-07
 - Ordem dos produtos agora é aleatória (`shuffleKey` em `public/app.js`): sorteada a cada abertura da página,
   fixa enquanto a página está aberta (cards não pulam ao marcar comprado/atualizar). Comprados continuam no final.
+- Adicionado item 15: Women's Nike Hybrid RN Training Shoes (IO3815-102, White/Laser Crimson), roupas, "Tamanho 7", foto CDN Nike (conferida a cor).
+  EUA: Nike oficial US$ 145 (conferido). CA: Nike oficial C$ 180 (conferido), Altitude Sports C$ 185 (conferido). 0 SerpApi.
+  Nike avisa que forma pequeno (sugere meio número acima). Não há categoria "calçados" (ficou em roupas).
