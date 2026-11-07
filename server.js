@@ -8,7 +8,7 @@ module.exports = app;
 
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
-  ready.then(() => {
+  ready().then(() => {
     app.listen(PORT, () => console.log(`Lista de Compras rodando em http://localhost:${PORT} (banco: ${db.kind})`));
   }).catch(err => {
     console.error("Falha ao iniciar o banco de dados:", err);

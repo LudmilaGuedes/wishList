@@ -6,13 +6,23 @@ const { db, COUNTRIES, cleanPriceRow } = require("./db");
 const { refreshItem, refreshFx, refreshAll, serpapiLeft } = require("./prices");
 const auto = require("./auto");
 
-// Prepara o banco uma vez (na Vercel, a cada "acordada" da função). Todo pedido espera isso terminar.
-const ready = db.init().then(async () => {
+// Prepara o banco uma vez (na Vercel, a cada "acordada" da função). Todo pedido da API espera isso terminar.
+// Se a conexão falhar (acontece às vezes quando o Neon está "acordando"), tenta de novo, e o próximo pedido tenta outra vez.
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function start() {
+  for (let i = 1; ; i++) {
+    try { await db.init(); break; }
+    catch (err) { if (i >= 3) throw err; console.warn(`Banco: tentativa ${i} falhou (${err.message}), tentando de novo...`); await sleep(500 * i); }
+  }
   if (!(await db.getSetting("fx"))) await refreshFx().catch(err => console.warn("Câmbio:", err.message));
-});
+}
+let readyP = null;
+const ready = () => (readyP ||= start().catch(err => { readyP = null; throw err; }));
+ready().catch(() => {}); // já começa a preparar; erro aqui é tratado no próximo pedido
 
 const app = express();
-app.use((req, res, next) => ready.then(() => next(), next));
+app.use(express.static(path.join(__dirname, "..", "public"))); // páginas abrem mesmo se o banco demorar
+app.use((req, res, next) => ready().then(() => next(), next));
 app.use(express.json({ limit: "100kb" }));
 
 // Chave de acesso: se APP_KEY estiver definida, a API só responde para quem abriu o site pelo link com ?k=CHAVE.
@@ -25,7 +35,7 @@ if (KEY) {
   });
 }
 
-app.use(express.static(path.join(__dirname, "..", "public")));
+
 
 const wrap = fn => (req, res) => fn(req, res).catch(err => {
   console.error(err);

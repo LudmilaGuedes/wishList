@@ -108,7 +108,7 @@ function jsonStore(file) {
 function pgStore(url) {
   const { Pool } = require("pg");
   const local = /localhost|127\.0\.0\.1/.test(url);
-  const pool = new Pool({ connectionString: url, ssl: local ? false : { rejectUnauthorized: false } });
+  const pool = new Pool({ connectionString: url, ssl: local ? false : { rejectUnauthorized: false }, connectionTimeoutMillis: 10000 });
   const q = (text, params) => pool.query(text, params);
 
   return {
