@@ -120,3 +120,6 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
   Dólar exibido SEM imposto (igual à loja); valor em R$ COM imposto (TAX em public/app.js: EUA 8,25% Houston TX; CA 13% HST Toronto).
 - Botão "comprado" (check no canto do card): grava `bought_at` no banco (PUT /api/items/:id/bought), vale em todo aparelho;
   card comprado vai para o final, apagado, foto cinza, nome riscado. Botões do rodapé do card foram removidos (editar/remover = pedir ao Claude).
+- Adicionado item 13: Tree Hut Vanilla Shea Sugar Scrub 510 g (beleza), foto CDN Tree Hut, gravado no site online, 0 SerpApi.
+  EUA: Ulta US$ 9,99 (conferido) e Walmart US$ 8,94 (busca web). CA: Well.ca C$ 17,47 (conferido; só online). Tree Hut não vende direto.
+  Sem preço achado de graça em Shoppers/Walmart.ca/London Drugs/Amazon.ca.
