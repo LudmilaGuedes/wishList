@@ -2,6 +2,7 @@
   "services": {
     "lista-de-compras": {
       "root": ".",
+      "entrypoint": "server.js",
       "buildCommand": "npm install"
     }
   },
