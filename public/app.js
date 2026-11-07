@@ -128,7 +128,6 @@
       <div class="card-body">
         <p class="kicker">${kicker}${pending ? ` <span class="pending">· aguardando preços</span>` : ""}</p>
         <h3>${esc(it.name)}</h3>
-        ${it.model ? `<p class="model">${esc(it.model)}</p>` : ""}
         ${it.variant ? `<p class="variant"><span>Cor / tamanho</span>${esc(it.variant)}</p>` : ""}
         ${it.note ? `<p class="note">${esc(it.note)}</p>` : ""}
         ${best}
