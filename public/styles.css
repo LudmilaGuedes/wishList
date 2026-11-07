@@ -88,7 +88,7 @@ main { padding-block: 34px 70px; display: grid; gap: 26px; }
 
 /* ---------- cartão do produto ---------- */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; align-items: start; }
-.card { background: var(--surface); border-radius: var(--radius); display: flex; flex-direction: column; min-width: 0; overflow: hidden; box-shadow: var(--shadow); transition: transform .3s ease, box-shadow .3s ease; }
+.card { position: relative; background: var(--surface); border-radius: var(--radius); display: flex; flex-direction: column; min-width: 0; overflow: hidden; box-shadow: var(--shadow); transition: transform .3s ease, box-shadow .3s ease; }
 @media (prefers-reduced-motion: no-preference) {
   .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
 }
@@ -181,3 +181,15 @@ dialog::backdrop { background: rgb(58 37 48 / 0.35); backdrop-filter: blur(4px);
   .photo { aspect-ratio: 4 / 3; }
   .tabs { padding-bottom: 8px; }
 }
+
+/* Comprado: botão de check no canto do card; card vai para o final e fica apagado */
+.check { position: absolute; top: 22px; right: 22px; z-index: 2; width: 38px; height: 38px; padding: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1.5px solid var(--faint); color: transparent; box-shadow: var(--shadow); transition: background .2s, color .2s, border-color .2s, transform .15s; }
+.check svg { width: 20px; height: 20px; }
+.check:hover { color: var(--faint); border-color: var(--accent); }
+.check:active { transform: scale(0.92); }
+.check.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.card.bought { box-shadow: none; }
+.card.bought > :not(.check) { opacity: 0.5; }
+.card.bought .photo img { filter: grayscale(1); }
+.card.bought h3 { text-decoration: line-through; text-decoration-thickness: 1px; }
+.card:not(:has(.photo)) :is(.kicker, h3) { padding-right: 48px; }

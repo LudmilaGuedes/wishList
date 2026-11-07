@@ -26,6 +26,7 @@ if (!url) { console.error("Defina DATABASE_URL."); process.exit(1); }
         it.created_at, it.prices_checked_at || null, it.searched_at || null, it.search_found ?? null]
     );
   }
+  for (const it of state.items) if (it.bought_at) await q(`UPDATE items SET bought_at = $2 WHERE id = $1`, [it.id, it.bought_at]);
   for (const p of state.prices) {
     await q(
       `INSERT INTO prices (item_id, country, store, price, previous_price, url, source, updated_at)

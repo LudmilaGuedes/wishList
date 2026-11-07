@@ -123,7 +123,9 @@
     const kicker = [catLabel(it.category), it.official_store].filter(Boolean).map(esc).join(" · ");
     const foot = it.prices_checked_at ? `Atualizado em ${fmtDate(it.prices_checked_at)}` : `Adicionado em ${fmtDate(it.created_at)}`;
     const img = safeUrl(it.image_url);
-    return `<article class="card">
+    const bought = Boolean(it.bought_at);
+    const check = `<button type="button" class="check${bought ? " on" : ""}" data-bought="${it.id}" aria-pressed="${bought}" title="${bought ? "Comprado — toque para desmarcar" : "Marcar como comprado"}" aria-label="${bought ? "Desmarcar comprado" : "Marcar como comprado"}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>`;
+    return `<article class="card${bought ? " bought" : ""}">${check}
       ${img ? `<div class="photo"><img src="${esc(img)}" alt="${esc(it.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.remove()"></div>` : ""}
       <div class="card-body">
         <p class="kicker">${kicker}${pending ? ` <span class="pending">· aguardando preços</span>` : ""}</p>
@@ -133,7 +135,7 @@
         ${best}
         <div class="countries">${us.html}${ca.html}</div>
       </div>
-      <footer class="card-foot"><span>${foot}</span></footer>
+      <footer class="card-foot"><span>${bought ? `Comprado em ${fmtDate(it.bought_at)}` : foot}</span></footer>
     </article>`;
   }
 
@@ -145,7 +147,8 @@
     const term = q.trim().toLowerCase();
     const shown = items
       .filter(i => cat === "todas" || i.category === cat)
-      .filter(i => !term || `${i.name} ${i.model} ${i.variant || ""} ${i.note}`.toLowerCase().includes(term));
+      .filter(i => !term || `${i.name} ${i.model} ${i.variant || ""} ${i.note}`.toLowerCase().includes(term))
+      .sort((a, b) => Boolean(a.bought_at) - Boolean(b.bought_at)); // comprados vão para o final
     if (!items.length) {
       $("list").innerHTML = `<div class="empty"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M14 18h20l-2 22H16z"/><path d="M19 18v-3a5 5 0 0 1 10 0v3"/><path d="M24 26c-1.5-2-5-1.5-5 1 0 2.5 5 5.5 5 5.5s5-3 5-5.5c0-2.5-3.5-3-5-1z" fill="currentColor" stroke="none"/></svg><h2>Sua lista está vazia</h2><p>Clique em <b>+ Adicionar item</b>, escreva o produto com marca e modelo e escolha a categoria.</p></div>`;
     } else if (!shown.length) {
@@ -229,6 +232,17 @@
   });
 
   $("list").addEventListener("click", async e => {
+    const bt = e.target.closest("[data-bought]");
+    if (bt) {
+      const it = items.find(i => i.id === Number(bt.dataset.bought));
+      if (!it) return;
+      const before = it.bought_at, want = !before;
+      it.bought_at = want ? new Date().toISOString() : null; // muda na hora; desfaz se o servidor falhar
+      render();
+      try { Object.assign(it, await api("PUT", `/api/items/${it.id}/bought`, { bought: want })); render(); }
+      catch (err) { it.bought_at = before; render(); toast(err.message); }
+      return;
+    }
     const ref = e.target.closest("[data-refresh]");
     if (ref) return refreshOne(ref.dataset.refresh, ref, ref.dataset.full === "1");
     const ed = e.target.closest("[data-edit]");

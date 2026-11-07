@@ -65,6 +65,13 @@ function jsonStore(file) {
       save();
       return item;
     },
+    async setBought(id, bought) {
+      const item = state.items.find(i => i.id === id);
+      if (!item) return null;
+      item.bought_at = bought ? now() : null;
+      save();
+      return item;
+    },
     async deleteItem(id) {
       state.items = state.items.filter(i => i.id !== id);
       state.prices = state.prices.filter(p => p.item_id !== id);
@@ -142,6 +149,7 @@ function pgStore(url) {
         );
         ALTER TABLE items ADD COLUMN IF NOT EXISTS image_url TEXT NOT NULL DEFAULT '';
         ALTER TABLE items ADD COLUMN IF NOT EXISTS variant TEXT NOT NULL DEFAULT '';
+        ALTER TABLE items ADD COLUMN IF NOT EXISTS bought_at TIMESTAMPTZ;
         ALTER TABLE items ADD COLUMN IF NOT EXISTS searched_at TIMESTAMPTZ;
         ALTER TABLE items ADD COLUMN IF NOT EXISTS search_found INTEGER;
       `);
@@ -176,6 +184,9 @@ function pgStore(url) {
         `UPDATE items SET name=$2, model=$3, category=$4, note=$5, official_store=$6, image_url=$7, variant=$8 WHERE id=$1 RETURNING *`,
         [id, d.name, d.model, d.category, d.note, d.official_store, d.image_url, d.variant]
       )).rows[0];
+    },
+    async setBought(id, bought) {
+      return (await q(`UPDATE items SET bought_at = ${bought ? "now()" : "NULL"} WHERE id = $1 RETURNING *`, [id])).rows[0] || null;
     },
     async deleteItem(id) {
       await q(`DELETE FROM items WHERE id = $1`, [id]);

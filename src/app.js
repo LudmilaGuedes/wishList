@@ -74,6 +74,13 @@ app.put("/api/items/:id", wrap(async (req, res) => {
   res.json(item);
 }));
 
+// Marcar como comprado (fica salvo no banco: vale para todos os aparelhos).
+app.put("/api/items/:id/bought", wrap(async (req, res) => {
+  const item = await db.setBought(idParam(req), Boolean(req.body && req.body.bought));
+  if (!item) return res.status(404).json({ error: "Item não encontrado." });
+  res.json(item);
+}));
+
 app.delete("/api/items/:id", wrap(async (req, res) => {
   await db.deleteItem(idParam(req));
   res.status(204).end();
