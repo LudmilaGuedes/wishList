@@ -18,11 +18,11 @@
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const safeUrl = u => (typeof u === "string" && /^https?:\/\//i.test(u)) ? u : "";
   const num = n => n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  // Impostos somados aos preços mostrados: EUA = Houston, Texas (8,25%); Canadá = Toronto, Ontário (HST 13%).
-  // Os preços gravados continuam sem imposto (como nas lojas); só a exibição soma.
+  // Impostos: EUA = Houston, Texas (8,25%); Canadá = Toronto, Ontário (HST 13%).
+  // Preço em dólar aparece sem imposto (igual ao site da loja); o imposto entra só no valor em reais.
   const TAX = { USD: 0.0825, CAD: 0.13 };
   const withTax = (n, cur) => n * (1 + TAX[cur]);
-  const money = (n, cur) => (cur === "CAD" ? "C$ " : "US$ ") + num(withTax(n, cur));
+  const money = (n, cur) => (cur === "CAD" ? "C$ " : "US$ ") + num(n);
   // Cotação para o valor aproximado em reais: vem do servidor (atualizada 1x por dia); estes são só reserva.
   const BRL = { USD: 5.4, CAD: 3.8 };
   const brl = (n, cur) => "R$ " + num(withTax(n, cur) * BRL[cur]);
@@ -96,7 +96,7 @@
       let delta = "";
       if (has && typeof r.previous_price === "number" && r.previous_price !== r.price) {
         const d = r.price - r.previous_price;
-        delta = `<span class="delta ${d < 0 ? "down" : "up"}" title="Antes: ${money(r.previous_price, cur)}">${d < 0 ? "↓" : "↑"}${num(Math.abs(withTax(d, cur)))}</span>`;
+        delta = `<span class="delta ${d < 0 ? "down" : "up"}" title="Antes: ${money(r.previous_price, cur)}">${d < 0 ? "↓" : "↑"}${num(Math.abs(d))}</span>`;
       }
       const state = !has ? " na" : (r.price === low ? " low" : "");
       return `<li class="row${state}">${name}<span class="dots" aria-hidden="true"></span>${delta}<span class="p">${has ? `${money(r.price, cur)}<small class="brl">${brl(r.price, cur)}</small>` : "não vende"}</span></li>`;

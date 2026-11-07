@@ -117,4 +117,4 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
   Dica: nunca usar `vercel env pull` para ler APP_KEY/SERPAPI_KEY; nunca escrever a chave no CLAUDE.md (repo público).
 - Criada publicação automática (hook Stop + scripts/publicar.sh). Produtos novos passam a ser gravados direto no site online.
 - Visual: topo compacto no celular (some ao rolar), sem contadores, sem "Como funciona". Card de câmbio no fim (real, 1x/dia, open.er-api).
-  Preços exibidos COM imposto (TAX em public/app.js: EUA 8,25% Houston TX; CA 13% HST Toronto); no banco ficam sem imposto.
+  Dólar exibido SEM imposto (igual à loja); valor em R$ COM imposto (TAX em public/app.js: EUA 8,25% Houston TX; CA 13% HST Toronto).
