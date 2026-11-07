@@ -164,7 +164,6 @@
     $("r-usd").textContent = "R$ " + num(BRL.USD);
     $("r-cad").textContent = "R$ " + num(BRL.CAD);
     $("r-usdcad").textContent = fx && fx.usdToCad ? "C$ " + num(fx.usdToCad) : "—";
-    $("r-date").textContent = fx && fx.usdToBrl ? `Cotação de ${fmtDate(fx.updatedAt)}` : "Cotação aproximada";
   }
   showRates();
   $("f-cat").innerHTML = CATS.map(c => `<option value="${c.id}">${c.label}</option>`).join("");
