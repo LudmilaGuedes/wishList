@@ -63,7 +63,12 @@
   </section>
   <div id="list"><div class="empty"><h2>Carregando sua lista…</h2></div></div>
 
-  <p class="how"><strong>Como funciona:</strong> os preços aparecem sem imposto (nos EUA o imposto varia por estado; no Canadá, GST/HST é somado no caixa). Os preços dos EUA são buscados como se você estivesse em Houston, Texas (Walmart e Target mudam o preço conforme a cidade). A Target não tem lojas no Canadá. A seta ↑↓ mostra quanto o preço mudou desde a última atualização. O valor em reais é aproximado, calculado com <span id="brlRates"></span>.</p>
+  <section class="rates" aria-label="Câmbio e impostos">
+    <div class="rate"><span class="rate-label">Dólar americano</span><span class="rate-val">US$ 1 = <b id="r-usd">…</b></span></div>
+    <div class="rate"><span class="rate-label">Dólar canadense</span><span class="rate-val">C$ 1 = <b id="r-cad">…</b></span></div>
+    <div class="rate"><span class="rate-label">Dólar → canadense</span><span class="rate-val">US$ 1 = <b id="r-usdcad">…</b></span></div>
+    <p class="rate-foot"><span id="r-date"></span> · Preços com imposto: EUA 8,25% (Houston, Texas) · Canadá 13% HST (Toronto, Ontário)</p>
+  </section>
 </main>
 
 <dialog id="editor" aria-labelledby="editorTitle">

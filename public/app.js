@@ -18,10 +18,14 @@
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const safeUrl = u => (typeof u === "string" && /^https?:\/\//i.test(u)) ? u : "";
   const num = n => n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const money = (n, cur) => (cur === "CAD" ? "C$ " : "US$ ") + num(n);
-  // Cotação usada para mostrar o valor aproximado em reais. Mude aqui quando quiser.
+  // Impostos somados aos preços mostrados: EUA = Houston, Texas (8,25%); Canadá = Toronto, Ontário (HST 13%).
+  // Os preços gravados continuam sem imposto (como nas lojas); só a exibição soma.
+  const TAX = { USD: 0.0825, CAD: 0.13 };
+  const withTax = (n, cur) => n * (1 + TAX[cur]);
+  const money = (n, cur) => (cur === "CAD" ? "C$ " : "US$ ") + num(withTax(n, cur));
+  // Cotação para o valor aproximado em reais: vem do servidor (atualizada 1x por dia); estes são só reserva.
   const BRL = { USD: 5.4, CAD: 3.8 };
-  const brl = (n, cur) => "R$ " + num(n * BRL[cur]);
+  const brl = (n, cur) => "R$ " + num(withTax(n, cur) * BRL[cur]);
   const fmtDate = iso => iso ? new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" }) : "";
   const priced = arr => (arr || []).filter(r => typeof r.price === "number");
 
@@ -45,7 +49,7 @@
   async function load() {
     try {
       const data = await api("GET", "/api/items");
-      items = data.items; fx = data.fx; autoPrices = data.autoPrices; autoInfo = data.auto; serpLeft = data.serpapiLeft;
+      items = data.items; fx = data.fx; showRates(); autoPrices = data.autoPrices; autoInfo = data.auto; serpLeft = data.serpapiLeft;
     } catch (err) {
       $("list").innerHTML = `<div class="empty"><h2>Não foi possível carregar a lista</h2><p>${esc(err.message)}</p></div>`;
       return;
@@ -92,7 +96,7 @@
       let delta = "";
       if (has && typeof r.previous_price === "number" && r.previous_price !== r.price) {
         const d = r.price - r.previous_price;
-        delta = `<span class="delta ${d < 0 ? "down" : "up"}" title="Antes: ${money(r.previous_price, cur)}">${d < 0 ? "↓" : "↑"}${num(Math.abs(d))}</span>`;
+        delta = `<span class="delta ${d < 0 ? "down" : "up"}" title="Antes: ${money(r.previous_price, cur)}">${d < 0 ? "↓" : "↑"}${num(Math.abs(withTax(d, cur)))}</span>`;
       }
       const state = !has ? " na" : (r.price === low ? " low" : "");
       return `<li class="row${state}">${name}<span class="dots" aria-hidden="true"></span>${delta}<span class="p">${has ? `${money(r.price, cur)}<small class="brl">${brl(r.price, cur)}</small>` : "não vende"}</span></li>`;
@@ -158,7 +162,14 @@
   }
 
   /* -------- eventos -------- */
-  $("brlRates").textContent = `US$ 1 = R$ ${num(BRL.USD)} e C$ 1 = R$ ${num(BRL.CAD)}`;
+  function showRates() {
+    if (fx && fx.usdToBrl) { BRL.USD = fx.usdToBrl; BRL.CAD = fx.cadToBrl; }
+    $("r-usd").textContent = "R$ " + num(BRL.USD);
+    $("r-cad").textContent = "R$ " + num(BRL.CAD);
+    $("r-usdcad").textContent = fx && fx.usdToCad ? "C$ " + num(fx.usdToCad) : "—";
+    $("r-date").textContent = fx && fx.usdToBrl ? `Cotação de ${fmtDate(fx.updatedAt)}` : "Cotação aproximada";
+  }
+  showRates();
   $("f-cat").innerHTML = CATS.map(c => `<option value="${c.id}">${c.label}</option>`).join("");
 
   $("tabs").addEventListener("click", e => {
@@ -249,7 +260,7 @@
     div.className = "price-row";
     div.innerHTML = `
       <input class="store" list="stores-${country}" placeholder="Loja" aria-label="Loja" value="${esc(r.store || "")}">
-      <input class="price" type="number" step="0.01" min="0" inputmode="decimal" placeholder="Preço" aria-label="Preço" value="${typeof r.price === "number" ? r.price : ""}">
+      <input class="price" type="number" step="0.01" min="0" inputmode="decimal" placeholder="Preço sem imposto" aria-label="Preço sem imposto" value="${typeof r.price === "number" ? r.price : ""}">
       <button type="button" class="btn-ghost rm" aria-label="Remover loja">×</button>
       <input class="url" type="url" placeholder="Link do produto (opcional)" aria-label="Link do produto" value="${esc(r.url || "")}">`;
     div.querySelector(".rm").addEventListener("click", () => div.remove());

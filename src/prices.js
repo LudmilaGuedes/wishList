@@ -266,7 +266,9 @@ async function refreshFx() {
   const json = await res.json();
   const rate = json && json.rates && json.rates.CAD;
   if (typeof rate !== "number") throw new Error("Câmbio USD→CAD não encontrado");
+  const brl = json.rates.BRL;
   const fx = { usdToCad: rate, updatedAt: new Date().toISOString(), source: "open.er-api.com" };
+  if (typeof brl === "number") { fx.usdToBrl = brl; fx.cadToBrl = brl / rate; }
   await db.setSetting("fx", fx);
   return fx;
 }

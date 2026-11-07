@@ -143,8 +143,12 @@ a.store:hover { color: var(--accent); text-decoration: underline; text-underline
 .empty svg { width: 54px; height: 54px; color: var(--accent); margin-bottom: 8px; }
 .empty h2 { font-family: var(--font-display); font-weight: 400; color: var(--ink); margin: 0 0 8px; font-size: 1.7rem; }
 .empty p { margin: 0 auto; max-width: 46ch; }
-.how { color: var(--muted); font-size: 0.8rem; padding-top: 22px; max-width: 75ch; border-top: 1px solid var(--line); }
-.how strong { color: var(--ink); font-weight: 500; }
+.rates { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.rate { background: var(--surface-2); border-radius: 16px; padding: 12px 14px; display: grid; gap: 3px; min-width: 0; }
+.rate-label { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.rate-val { font-size: 0.95rem; color: var(--ink); }
+.rate-val b { font-family: var(--font-display); font-weight: 500; color: var(--accent); font-size: 1.15rem; }
+.rate-foot { grid-column: 1 / -1; margin: 4px 0 0; font-size: 0.76rem; color: var(--muted); }
 
 /* ---------- editor de preços ---------- */
 dialog { border: 0; border-radius: var(--radius); background: var(--surface); color: var(--ink); padding: 30px; width: min(780px, calc(100vw - 32px)); max-height: calc(100vh - 32px); box-shadow: 0 30px 80px rgb(60 20 40 / 0.25); }

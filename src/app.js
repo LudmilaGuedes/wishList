@@ -45,11 +45,18 @@ const idParam = req => Number.parseInt(req.params.id, 10);
 
 app.get("/healthz", (req, res) => res.send("ok"));
 
+// Câmbio (grátis, open.er-api.com): renova se faltar o real ou se for de outro dia.
+async function freshFx() {
+  const fx = await db.getSetting("fx");
+  if (fx && fx.usdToBrl && auto.dayKey(fx.updatedAt) === auto.today()) return fx;
+  return refreshFx().catch(() => fx);
+}
+
 app.get("/api/items", wrap(async (req, res) => {
   const items = await db.listItems();
   res.json({
     items,
-    fx: await db.getSetting("fx"),
+    fx: await freshFx(),
     autoPrices: Boolean(process.env.SERPAPI_KEY),
     auto: auto.status(items),
     serpapiLeft: await serpapiLeft(),
