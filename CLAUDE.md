@@ -126,3 +126,7 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
 - Adicionado item 14: Maybelline Colossal Waterproof Mascara, Glam Black 240 (beleza), foto oficial (embalagem igual em todos os pretos).
   EUA: Walmart US$ 8,98 (busca web), Maybelline oficial US$ 10,99 (conferido). CA: Maybelline CA C$ 10,99 (conferido, mas a página CA é a versão 36H, sem Glam Black listado).
   Your Independent Grocer apareceu com preços conflitantes (C$ 9,99 ou 14,99) — não gravado. Pharmasave bloqueia (IP).
+
+### 2026-11-07
+- Ordem dos produtos agora é aleatória (`shuffleKey` em `public/app.js`): sorteada a cada abertura da página,
+  fixa enquanto a página está aberta (cards não pulam ao marcar comprado/atualizar). Comprados continuam no final.

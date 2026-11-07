@@ -8,6 +8,9 @@
   ];
   const catLabel = id => (CATS.find(c => c.id === id) || CATS[CATS.length - 1]).label;
   const $ = id => document.getElementById(id);
+  // Ordem aleatória dos cards: sorteada 1x por item a cada abertura da página (não pula ao atualizar/marcar)
+  const shuffleKeys = new Map();
+  const shuffleKey = id => { if (!shuffleKeys.has(id)) shuffleKeys.set(id, Math.random()); return shuffleKeys.get(id); };
   let items = [], fx = null, autoPrices = false, cat = "todas", q = "", loaded = false, autoInfo = null, serpLeft = null, autoRunning = false;
 
   // Chave de acesso que vem no link (?k=...). Fica guardada no aparelho e vai em todo pedido.
@@ -141,14 +144,13 @@
 
   function render() {
     renderTabs();
-    $("refreshAll").hidden = !items.length;
-    if (!autoRunning) $("autoline").hidden = true; // só aparece enquanto atualiza os preços do dia
+    $("refreshAll").hidden = !items.length;    if (!autoRunning) $("autoline").hidden = true; // só aparece enquanto atualiza os preços do dia
     if (!loaded) return;
     const term = q.trim().toLowerCase();
     const shown = items
       .filter(i => cat === "todas" || i.category === cat)
       .filter(i => !term || `${i.name} ${i.model} ${i.variant || ""} ${i.note}`.toLowerCase().includes(term))
-      .sort((a, b) => Boolean(a.bought_at) - Boolean(b.bought_at)); // comprados vão para o final
+      .sort((a, b) => Boolean(a.bought_at) - Boolean(b.bought_at) || shuffleKey(a.id) - shuffleKey(b.id)); // comprados vão para o final; o resto em ordem aleatória
     if (!items.length) {
       $("list").innerHTML = `<div class="empty"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M14 18h20l-2 22H16z"/><path d="M19 18v-3a5 5 0 0 1 10 0v3"/><path d="M24 26c-1.5-2-5-1.5-5 1 0 2.5 5 5.5 5 5.5s5-3 5-5.5c0-2.5-3.5-3-5-1z" fill="currentColor" stroke="none"/></svg><h2>Sua lista está vazia</h2><p>Clique em <b>+ Adicionar item</b>, escreva o produto com marca e modelo e escolha a categoria.</p></div>`;
     } else if (!shown.length) {
