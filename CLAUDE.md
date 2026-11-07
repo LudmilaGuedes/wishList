@@ -10,7 +10,8 @@ Site para montar uma lista de compras por categoria e comparar preços nos EUA e
 - Desenvolvimento com recarga automática: `npm run dev`.
 - Atualizar todos os preços pelo terminal: `npm run update-prices` (gasta buscas da SerpApi).
 - Teste rápido: `curl localhost:3000/healthz` deve responder `ok`; `curl localhost:3000/api/items` lista os itens.
-- Não há testes automatizados nem repositório git (ainda).
+- Não há testes automatizados. Código no GitHub: https://github.com/LudmilaGuedes/wishList (público, branch main).
+- Commits **sem** linha Co-Authored-By do Claude (pedido da usuária).
 - Nunca mostrar o conteúdo do `.env` (tem a `SERPAPI_KEY`).
 
 ## Ao adicionar um produto (pedido da usuária)
@@ -99,3 +100,8 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
   - Vercel: projeto `ludmila17/lista-de-compras` criado; `SERPAPI_KEY` e `APP_KEY` configuradas (Production).
   - Pendente: usuária criar o banco Neon pelo painel da Vercel (o comando `vercel integration add neon` foi bloqueado
     pela permissão automática); depois: `vercel env pull`, migrar dados, `vercel --prod`.
+
+### 2026-11-06
+- Projeto colocado no GitHub (LudmilaGuedes/wishList, público), commit só no nome da usuária, sem co-autor Claude.
+  Fora do git: .env*, .app-key.local, data/, node_modules, .vercel. Conferido que nenhuma chave está no código.
+- Pendente: ligar o repositório à Vercel (deploy automático a cada push) e criar o banco Neon.
