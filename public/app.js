@@ -148,10 +148,6 @@
     const shown = items
       .filter(i => cat === "todas" || i.category === cat)
       .filter(i => !term || `${i.name} ${i.model} ${i.variant || ""} ${i.note}`.toLowerCase().includes(term));
-    const pend = items.filter(i => !priced(i.prices.us).length && !priced(i.prices.ca).length).length;
-    $("summary").innerHTML = items.length
-      ? `<span><strong>${items.length}</strong> ${items.length === 1 ? "item" : "itens"} na lista</span><span><strong>${pend}</strong> aguardando pesquisa</span>`
-      : "";
     if (!items.length) {
       $("list").innerHTML = `<div class="empty"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M14 18h20l-2 22H16z"/><path d="M19 18v-3a5 5 0 0 1 10 0v3"/><path d="M24 26c-1.5-2-5-1.5-5 1 0 2.5 5 5.5 5 5.5s5-3 5-5.5c0-2.5-3.5-3-5-1z" fill="currentColor" stroke="none"/></svg><h2>Sua lista está vazia</h2><p>Clique em <b>+ Adicionar item</b>, escreva o produto com marca e modelo e escolha a categoria.</p></div>`;
     } else if (!shown.length) {
