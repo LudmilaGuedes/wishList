@@ -298,4 +298,18 @@
 
   render();
   load().then(runAuto);
+
+  /* -------- celular: esconde o topo ao rolar para baixo, mostra ao rolar para cima -------- */
+  (function () {
+    const top = document.querySelector("header.top");
+    const mobile = window.matchMedia("(max-width: 720px)");
+    let lastY = window.scrollY;
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      if (!mobile.matches || y < 80 || document.activeElement === $("q")) top.classList.remove("escondido");
+      else if (y > lastY + 6) top.classList.add("escondido");
+      else if (y < lastY - 6) top.classList.remove("escondido");
+      lastY = y;
+    }, { passive: true });
+  })();
 })();

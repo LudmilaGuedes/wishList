@@ -39,7 +39,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-body); 
 .wrap { max-width: 1160px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
 
 /* ---------- topo ---------- */
-header.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+header.top { position: sticky; top: 0; z-index: 5; transition: transform .25s ease; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
 .top-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-block: 26px 14px; }
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .bow { flex: none; width: 44px; height: 44px; color: var(--accent); }
@@ -165,4 +165,17 @@ dialog::backdrop { background: rgb(58 37 48 / 0.35); backdrop-filter: blur(4px);
   .search { flex: 1 1 100%; }
   .search input { width: 100%; }
   .tabs { gap: 22px; }
+  /* Celular: topo compacto e que some ao rolar para baixo (volta ao rolar para cima) */
+  header.top.escondido { transform: translateY(-100%); }
+  .top-row { padding-block: 12px 8px; gap: 10px; }
+  .brand { gap: 10px; }
+  .bow { width: 30px; height: 30px; }
+  .eyebrow { display: none; }
+  h1 { font-size: 1.45rem; }
+  .actions { gap: 8px; width: 100%; flex-wrap: nowrap; }
+  .actions .search { flex: 1 1 auto; min-width: 0; }
+  .actions button { flex: none; padding-inline: 12px; white-space: nowrap; }
+  .long { display: none; }
+  .photo { aspect-ratio: 4 / 3; }
+  .tabs { padding-bottom: 8px; }
 }
