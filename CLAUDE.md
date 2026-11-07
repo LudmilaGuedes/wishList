@@ -105,3 +105,10 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
 - Projeto colocado no GitHub (LudmilaGuedes/wishList, público), commit só no nome da usuária, sem co-autor Claude.
   Fora do git: .env*, .app-key.local, data/, node_modules, .vercel. Conferido que nenhuma chave está no código.
 - Pendente: ligar o repositório à Vercel (deploy automático a cada push) e criar o banco Neon.
+- Vercel ligada ao GitHub (cada push = deploy). Neon criado; 9 itens e 30 preços copiados para o Neon.
+- Site no ar: https://lista-de-compras-blond.vercel.app (lista-de-compras.vercel.app é de outra pessoa).
+  Corrigido: `entrypoint` no vercel.json; banco tenta reconectar (erro de TLS no 1º acesso); páginas não esperam o banco.
+- Problema: APP_KEY da Vercel não bate com a local. `vercel env pull` NÃO traz variáveis "Sensitive" (vem "[sensitive]"),
+  e por engano isso sobrescreveu `.app-key.local`. Trocar APP_KEY na Vercel foi bloqueado pela permissão automática.
+  Resolvido: usuária definiu nova APP_KEY no painel (salva em .app-key.local). Testado: 9 itens no ar, SerpApi ok (saldo 218).
+  Dica: nunca usar `vercel env pull` para ler APP_KEY/SERPAPI_KEY; nunca escrever a chave no CLAUDE.md (repo público).
