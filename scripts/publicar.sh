@@ -4,7 +4,7 @@
 # Usado pelo hook "Stop" do Claude Code (.claude/settings.local.json). Pode rodar à mão: bash scripts/publicar.sh
 cd "$(dirname "$0")/.." || exit 0
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
-git add -A
+git add -A 2>/dev/null
 if ! git diff --cached --quiet; then
   arquivos=$(git diff --cached --name-only | head -5 | tr '\n' ' ')
   git commit -q -m "Atualização automática: ${arquivos}" || exit 0
