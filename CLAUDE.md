@@ -133,3 +133,7 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
 - Adicionado item 15: Women's Nike Hybrid RN Training Shoes (IO3815-102, White/Laser Crimson), roupas, "Tamanho 7", foto CDN Nike (conferida a cor).
   EUA: Nike oficial US$ 145 (conferido). CA: Nike oficial C$ 180 (conferido), Altitude Sports C$ 185 (conferido). 0 SerpApi.
   Nike avisa que forma pequeno (sugere meio número acima). Não há categoria "calçados" (ficou em roupas).
+- Adicionado item 16: Women's adidas Adizero Dropset Pro Training Shoes (KK1555, Cloud White/Silver Metallic), roupas, "Tamanho 7", 0 SerpApi.
+  Foto: CDN Shopify da loja Toby's (adidas bloqueia leitura automática, 403). EUA: ALS US$ 119,95 (de 150, conferido),
+  Road Runner Sports US$ 149,95 (busca web). CA: Sport Chek C$ 169,99 (busca web; lá se chama "Dropset Pro"). adidas US/CA sem preço lido.
+  Obs.: chamada direta à API da adidas foi bloqueada pela permissão automática (anti-bot) — não insistir.
