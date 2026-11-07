@@ -134,12 +134,7 @@
         ${best}
         <div class="countries">${us.html}${ca.html}</div>
       </div>
-      <footer class="card-foot"><span>${foot}</span><span class="acts">
-        <button type="button" class="act" data-refresh="${it.id}" title="Confere os links de graça; usa a SerpApi só se precisar">Atualizar</button>
-        ${autoPrices ? `<button type="button" class="act" data-refresh="${it.id}" data-full="1" title="Pesquisa em todas as lojas (gasta até 4 consultas da SerpApi)">Busca completa</button>` : ""}
-        <button type="button" class="act" data-edit="${it.id}">Editar preços</button>
-        <button type="button" class="act" data-del="${it.id}">Remover</button>
-      </span></footer>
+      <footer class="card-foot"><span>${foot}</span></footer>
     </article>`;
   }
 
