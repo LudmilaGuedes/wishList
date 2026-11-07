@@ -123,3 +123,6 @@ Ao fim de cada sessão, adicionar aqui um resumo curto (data, o que foi pedido, 
 - Adicionado item 13: Tree Hut Vanilla Shea Sugar Scrub 510 g (beleza), foto CDN Tree Hut, gravado no site online, 0 SerpApi.
   EUA: Ulta US$ 9,99 (conferido) e Walmart US$ 8,94 (busca web). CA: Well.ca C$ 17,47 (conferido; só online). Tree Hut não vende direto.
   Sem preço achado de graça em Shoppers/Walmart.ca/London Drugs/Amazon.ca.
+- Adicionado item 14: Maybelline Colossal Waterproof Mascara, Glam Black 240 (beleza), foto oficial (embalagem igual em todos os pretos).
+  EUA: Walmart US$ 8,98 (busca web), Maybelline oficial US$ 10,99 (conferido). CA: Maybelline CA C$ 10,99 (conferido, mas a página CA é a versão 36H, sem Glam Black listado).
+  Your Independent Grocer apareceu com preços conflitantes (C$ 9,99 ou 14,99) — não gravado. Pharmasave bloqueia (IP).
